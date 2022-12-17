@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.validators import MinValueValidator
 from uuid import uuid4
 
-class collection(models.Model):
+class Collection(models.Model):
     title = models.CharField(max_length=255)
     featured_product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, related_name='+', blank=True)
 
@@ -25,9 +25,8 @@ class Product(models.Model):
         validators=[MinValueValidator(1)]
     )
     inventory = models.IntegerField(validators=[MinValueValidator(0)])
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    collection = models.ForeignKey(collection, on_delete=models.PROTECT, related_name='products')
+    last_update = models.DateTimeField(auto_now=True)
+    collection = models.ForeignKey(Collection, on_delete=models.PROTECT, related_name='products')
 
     def __str__(self) -> str:
         return self.title
